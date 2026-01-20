@@ -23,7 +23,22 @@
 hs_err_pid*
 replay_pid*
 
+# NetBeans klasörleri
+
 build/
+
 nbproject/private/
+
 dist/
+
 nb-configuration.xml
+
+# Derlenmiş Java dosyaları
+
+*.class
+
+# Sistem dosyaları
+
+.DS_Store
+
+Thumbs.db

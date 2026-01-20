@@ -23,22 +23,13 @@
 hs_err_pid*
 replay_pid*
 
-# NetBeans klasörleri
-
-build/
-
-nbproject/private/
-
-dist/
-
-nb-configuration.xml
-
-# Derlenmiş Java dosyaları
-
-*.class
+# Tüm alt klasörlerdeki gereksizleri temizle
+**/build/
+**/nbproject/private/
+**/dist/
+**/*.class
+**/nb-configuration.xml
 
 # Sistem dosyaları
-
 .DS_Store
-
 Thumbs.db

@@ -1,0 +1,4 @@
+INFO: System started
+ERROR: Disk full
+INFO: User logged in
+ERROR: Connection lost

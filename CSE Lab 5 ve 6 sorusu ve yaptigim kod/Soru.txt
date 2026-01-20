@@ -1,0 +1,117 @@
+Laboratory Task: Dynamic Gallery Management
+In this assignment, you will implement a Gallery Management System. The goal is to manage a car inventory using standard Java arrays.
+
+Since standard arrays in Java have a fixed size, this system requires you to manually handle dynamic resizing. You must ensure that the arrays are always perfectly sized to fit the data; there should be no empty slots or null values.
+
+CRITICAL CONCEPT: Parallel Arrays
+This system uses two separate arrays (cars and prices) to store information. These are Parallel Arrays.
+
+The car at cars[0] corresponds to the price at prices[0].
+
+RULE: Any operation (add, remove, resize) performed on the cars array MUST also be performed exactly the same way on the prices array to keep the data synchronized.
+
+1. Global System Variables
+The system maintains the state using the following static variables. Pay attention to the initialization:
+
+cars: An array of Strings (Car names).
+
+Initialization: Empty array with length 0.
+
+prices: An array of doubles (Car buying prices).
+
+Initialization: Empty array with length 0.
+
+cash: A double representing the gallery's balance.
+
+Initialization: 100000.0
+
+2. Method: buyCar
+This method adds a new car to the gallery by resizing BOTH arrays.
+
+Parameters: String carName, double price
+
+Return Type: void
+
+Logic Breakdown (The "Grow" Operation):
+Check Budget: Ensure cash is greater than or equal to price. If not, print an error and exit.
+
+Deduct Cash: Subtract price from cash.
+
+Resize & Copy (Apply to BOTH Arrays):
+
+For Cars: Create a new String array (size + 1). Copy old names. Add the new carName at the last index.
+
+For Prices: Create a new double array (size + 1). Copy old prices. Add the new price at the last index.
+
+Update the global references for both.
+
+Visual Example (Array Growth):
+We buy a "Mercedes" for 50,000.
+
+Old Arrays (Size 2):
+
+cars: ["BMW", "Audi"]
+
+prices: [40000, 30000]
+
+New Arrays (Size 3):
+
+cars: ["BMW", "Audi", "Mercedes"]
+
+prices: [40000, 30000, 50000]
+
+3. Method: sellCar
+This method removes a car from the gallery, calculates profit, and compacts BOTH arrays.
+
+Parameters: String carName
+
+Return Type: void
+
+Logic Breakdown (The "Shrink" Operation):
+Search: Find the index of the car. If not found, show an error.
+
+Process Sale: Add (Buying Price at that index * 1.2) to cash.
+
+Resize & Compact (Apply to BOTH Arrays):
+
+For Cars: Create a new String array (size - 1). Copy all names except the one at the sold index.
+
+For Prices: Create a new double array (size - 1). Copy all prices except the one at the sold index.
+
+Visual Example (Array Shrink):
+We sell the "Audi" (Index 1).
+
+Old Arrays (Size 3):
+
+cars: ["BMW", "Audi", "Mercedes"]
+
+prices: [40000, 30000, 50000]
+
+New Arrays (Size 2):
+
+cars: ["BMW", "Mercedes"]
+
+prices: [40000, 50000]
+
+(Notice: Both the name "Audi" and its price 30000 are removed. The "Mercedes" and its price shift to fill the gap.)
+
+4. Method: status
+Prints the current state of the gallery to the console.
+
+Parameters: None.
+
+Return Type: void.
+
+Logic:
+
+Print the cash balance.
+
+Print the cars.length (Total car count).
+
+Print the contents of the cars array in a single line, separated by commas.
+
+5. Summary of Methods
+Method	Parameters	Return	Main Responsibility
+buyCar	String, double	void	Decreases cash, Resizes BOTH arrays (+1)
+sellCar	String	void	Increases cash, Resizes BOTH arrays (-1)
+status	None	void	Prints current info

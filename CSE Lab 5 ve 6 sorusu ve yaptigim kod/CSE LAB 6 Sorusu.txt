@@ -1,0 +1,101 @@
+Assignment: Student Grading System
+1. Assignment Overview
+You are tasked with developing the backend logic for a Student Grading System. Unlike standard calculators, this system implements a specific academic policy where the lowest exam score is dropped to favor the student.
+
+Your goal is to demonstrate your proficiency in:
+
+Manipulating 1D and 2D Arrays.
+
+Implementing Modular Programming (Helper Methods).
+
+Handling Edge Cases (e.g., empty data, zeros).
+
+Formatting Console Output.
+
+2. The Grading Logic (Business Rules)
+Your implementation must strictly follow these rules:
+
+Drop Lowest Score: For any student, find the minimum grade in their exam list and exclude it from the calculation.
+
+Calculate Average: Compute the arithmetic mean of the remaining grades.
+
+Pass/Fail Criteria: A student is considered "Failed" if their final calculated average is strictly less than 50.0.
+
+3. Technical Specifications (API)
+You must implement the following 4 static methods within the StudentGradingSystem class. Do not modify the method signatures defined in the starter code.
+
+Method 1: calculateAverage
+Input: An Integer Array representing one student's scores.
+
+Logic: Identify the minimum value, subtract it from the sum, and divide by (N-1).
+
+Edge Case Handling: If the array is null or has fewer than 2 grades, return 0.0.
+
+Returns: double (The calculated average).
+
+Method 2: findTopStudent
+Input: * String Array (Student Names)
+
+2D Integer Array (Student Grades)
+
+Logic: Iterate through the class data, calculate averages using Method 1, and find the maximum average.
+
+Returns: String (Name of the student with the highest score).
+
+Method 3: analyzeClassPerformance
+Input: 2D Integer Array (All Grades)
+
+Logic: * Calculate the Class General Average (mean of all student averages).
+
+Count the total number of students who failed.
+
+Returns: void (Prints the statistics to the console).
+
+Method 4: printClassList
+Input: * String Array (Student Names)
+
+2D Integer Array (Student Grades)
+
+Logic: Print a formatted table of students and their final averages.
+
+Returns: void.
+
+4. Expected Console Output
+Your code will be tested against multiple scenarios. Ensure your output matches the format below exactly (including spacing and decimal precision).
+
+Test Scenario: Large Group & Edge Cases
+David: 10, 20, 10, 20 (Low scores)
+
+Eve: 100, 90, 95, 100 (High scores)
+
+Frank: 50, 50, 50, 50 (Borderline Pass)
+
+Grace: 60, 70, 60, 70 (Average)
+
+Heidi: 0, 0, 0, 0 (Zeros)
+
+Required Output:
+
+
+Plaintext
+
+--- DETAILED CLASS LIST ---
+Student: David      | Average: 16.7
+Student: Eve        | Average: 98.3
+Student: Frank      | Average: 50.0
+Student: Grace      | Average: 66.7
+Student: Heidi      | Average: 0.0
+
+--- CLASS PERFORMANCE ANALYSIS ---
+Class General Average: 46.33
+Number of Failed Students: 2
+
+--- TOP STUDENT ---
+Congratulations: Eve
+
+5. Submission Rules
+File Name: Your file must be named StudentGradingSystem.java.
+
+Plagiarism: Code similarity checks will be applied. Submit your own original work.
+
+Good luck!

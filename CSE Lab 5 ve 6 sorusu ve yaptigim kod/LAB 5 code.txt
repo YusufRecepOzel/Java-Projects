@@ -1,0 +1,192 @@
+public class Gallery {
+
+    // --- GLOBAL VARIABLES (Class Level) ---
+    // We use standard arrays. Since arrays in Java are fixed-size,
+    // we will manually resize them (create new ones) when adding/removing items.
+    static String[] cars = new String[0];   // Stores car names
+    static double[] prices = new double[0]; // Stores car prices
+    static double cash = 100000.0;          // Gallery cash balance (Starting: 100,000)
+
+    /**
+     * Main method: Expanded tests including edge cases.
+     */
+    public static void main(String[] args) {
+        System.out.println("=== GALLERY SYSTEM STARTING ===\n");
+
+        // 1. Initial Status
+        status();
+
+        // ---------------------------------------------------------
+        // TEST 1: STANDARD BUYING AND BUDGET LIMITS
+        // ---------------------------------------------------------
+        System.out.println("\n--- Test 1: Buying Cars & Draining Budget ---");
+        buyCar("Honda Civic", 20000);  // Cash: 80,000
+        buyCar("BMW 320i", 45000);     // Cash: 35,000
+        
+        // Let's try to buy a luxury car that we barely can't afford
+        buyCar("Porsche Taycan", 40000); // We have 35k, need 40k. Should FAIL.
+        
+        // Buy a cheaper car to drain remaining cash
+        buyCar("Fiat Egea", 30000);      // Cash: 5,000
+        
+        // Try buying one more car with very low balance
+        buyCar("Toy Car", 6000);         // We have 5k, need 6k. Should FAIL.
+
+        status(); 
+
+        // ---------------------------------------------------------
+        // TEST 2: PROFIT & CASE SENSITIVITY
+        // ---------------------------------------------------------
+        System.out.println("\n--- Test 2: Selling & Case Sensitivity ---");
+        // We have: Honda Civic, BMW 320i, Fiat Egea
+        
+        // Try selling with different casing (lowercase/uppercase mix)
+        // Code uses equalsIgnoreCase, so this MUST succeed.
+        sellCar("honda civic"); 
+        sellCar("bmw 320I");    
+
+        status(); // Cash should have increased significantly due to 20% profit
+
+        // ---------------------------------------------------------
+        // TEST 3: EMPTYING THE GALLERY (Array Resize to 0)
+        // ---------------------------------------------------------
+        System.out.println("\n--- Test 3: Selling Everything (Zero Array Size) ---");
+        // Only Fiat Egea is left. Let's sell it.
+        sellCar("Fiat Egea");
+
+        status(); // Should show CAR COUNT: 0 and empty brackets []
+
+        // ---------------------------------------------------------
+        // TEST 4: EDGE CASES ON EMPTY GALLERY
+        // ---------------------------------------------------------
+        System.out.println("\n--- Test 4: Invalid Operations on Empty Gallery ---");
+        // Try to sell a car when we have none
+        sellCar("Ghost Car");
+
+        // Try to buy a very expensive car now that we have profit money
+        // We started with 100k, bought cars, sold all with profit. 
+        // We should have much more than 100k now.
+        buyCar("Lamborghini Urus", 110000); 
+        
+        status(); // Final Check
+        
+        System.out.println("\n=== GALLERY SYSTEM TESTS COMPLETED ===");
+    }
+
+    // --- HELPER METHODS ---
+
+    /**
+     * Adds a new car to the gallery.
+     * Logic:
+     * 1. Check if we have enough cash.
+     * 2. Deduct the price from cash.
+     * 3. Create new arrays that are 1 unit larger than the current ones.
+     * 4. Copy all old data to the new arrays.
+     * 5. Add the new car at the end.
+     * * @param carName Name of the car to buy
+     * @param price   Cost of the car
+     */
+    public static void buyCar(String carName, double price) {
+        // Check budget
+        if (cash < price) {
+            System.out.println("[ERROR] Insufficient funds! (Could not buy " + carName + ")");
+            return;
+        }
+
+        // Deduct money
+        cash -= price;
+
+        // --- MANUAL ARRAY RESIZING (GROW) ---
+        // Create new arrays with size + 1
+        String[] newCars = new String[cars.length + 1];
+        double[] newPrices = new double[prices.length + 1];
+
+        // Copy existing elements from old arrays to new arrays
+        for (int i = 0; i < cars.length; i++) {
+            newCars[i] = cars[i];
+            newPrices[i] = prices[i];
+        }
+
+        // Add the new item at the last index
+        newCars[newCars.length - 1] = carName;
+        newPrices[newPrices.length - 1] = price;
+
+        // Update global references to point to the new arrays
+        cars = newCars;
+        prices = newPrices;
+
+        System.out.println("[BUY] " + carName + " added to gallery. Price: " + price);
+    }
+
+    /**
+     * Removes a car from the gallery (Sells it).
+     * Logic:
+     * 1. Find the index of the car.
+     * 2. Add the selling price (profit included) to cash.
+     * 3. Create new arrays that are 1 unit smaller.
+     * 4. Copy all data EXCEPT the sold car to the new arrays.
+     * * @param carName Name of the car to sell
+     */
+    public static void sellCar(String carName) {
+        int index = -1;
+
+        // Search for the car in the array
+        for (int i = 0; i < cars.length; i++) {
+            if (cars[i].equalsIgnoreCase(carName)) {
+                index = i;
+                break;
+            }
+        }
+
+        // If not found, print error and exit
+        if (index == -1) {
+            System.out.println("[ERROR] " + carName + " not found in gallery!");
+            return;
+        }
+
+        // Calculate sell price (Buying Price * 1.2 for 20% profit)
+        double sellPrice = prices[index] * 1.2;
+        cash += sellPrice;
+
+        // --- MANUAL ARRAY RESIZING (SHRINK) ---
+        // Create new arrays with size - 1
+        String[] newCars = new String[cars.length - 1];
+        double[] newPrices = new double[prices.length - 1];
+
+        int targetIndex = 0; // Index tracker for the new array
+        for (int i = 0; i < cars.length; i++) {
+            if (i == index)
+                continue; // Skip the car we are selling
+
+            // Copy element to the new array
+            newCars[targetIndex] = cars[i];
+            newPrices[targetIndex] = prices[i];
+            targetIndex++;
+        }
+
+        // Update global references
+        cars = newCars;
+        prices = newPrices;
+
+        System.out.println("[SELL] " + carName + " sold. Earned: " + sellPrice);
+    }
+
+    /**
+     * Prints the current status of the gallery.
+     * Displays cash balance, total car count, and the list of cars.
+     * Uses a manual loop to print array contents (No java.util.Arrays).
+     */
+    public static void status() {
+        System.out.println("   -> CASH: " + cash + " | CAR COUNT: " + cars.length);
+
+        System.out.print("   -> CARS: [");
+        for (int i = 0; i < cars.length; i++) {
+            System.out.print(cars[i]);
+            // Add a comma if it's not the last element
+            if (i < cars.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
+}
